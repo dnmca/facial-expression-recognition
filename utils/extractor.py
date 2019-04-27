@@ -23,18 +23,18 @@ class Extractor:
 
         haar_cascade_face = cv.CascadeClassifier(cv.data.haarcascades + 'haarcascade_frontalface_default.xml')
 
-        faces_rects = haar_cascade_face.detectMultiScale(image_bw, scaleFactor=1.2, minNeighbors=8)
+        faces_rects = haar_cascade_face.detectMultiScale(image_bw, scaleFactor=1.2, minNeighbors=5)
 
         faces = []
 
         # need to save faces_rects for future usage, need to save them in
 
         for (x, y, w, h) in faces_rects:
-            y_lo = y - h // 8
-            y_hi = y + h + h // 8
+            y_lo = y #- h // 8
+            y_hi = y + h# + h // 8
 
-            x_lo = x - w // 8
-            x_hi = x + w + w // 8
+            x_lo = x# - w // 8
+            x_hi = x + w# + w // 8
 
             faces.append(((y_lo, y_hi, x_lo, x_hi), image_bw[y_lo:y_hi, x_lo:x_hi]))
 
