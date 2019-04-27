@@ -15,7 +15,7 @@ class Extractor:
                       image_id: int,
                       target_dit: str = 'tmp/faces/',
                       image_size: int = 48,
-                      coord_path: str = 'tmp/coords.cvs'
+                      coord_path: str = 'tmp/coords.csv'
                       ) -> str:
         image = cv.imread(image_path)
 
