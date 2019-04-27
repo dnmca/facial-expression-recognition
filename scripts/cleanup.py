@@ -13,4 +13,5 @@ def cleanup() -> None:
     return None
 
 
-cleanup()
+if __name__ == "__main__":
+    cleanup()
