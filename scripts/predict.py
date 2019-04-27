@@ -13,6 +13,14 @@ from keras.metrics import categorical_accuracy
 from utils.extractor import Extractor
 
 
+MODEL_FILE = '../models/model_deep.json'
+
+WEIGHTS_FILE = '../models/weights/complex_20_cc_2.h5'
+
+IMAGE_FILE = '../data/original/test2.jpg'
+
+TARGET_DIR = '../images/'
+
 MAPPING = {
     0: 'Angry',
     1: 'Disgust',
@@ -24,7 +32,7 @@ MAPPING = {
 }
 
 
-def convertToRGB(image):
+def convert_to_rgb(image):
     """
     converts image to it's natural colormap
     :param image:
@@ -53,8 +61,8 @@ def read_model_from_disk(model_file: str, weights_file: str):
     return model
 
 
-MODEL = read_model_from_disk(model_file='../models/model_deep.json',
-                             weights_file='../models/weights/complex_20_cc_2.h5')
+MODEL = read_model_from_disk(model_file=MODEL_FILE,
+                             weights_file=WEIGHTS_FILE)
 
 
 def process_image(image: str):
@@ -63,7 +71,6 @@ def process_image(image: str):
     :param image: path to image
     :return:
     """
-
     coords_path = Extractor.extract_faces(image, 1, )
 
     df = pd.read_csv(coords_path)
@@ -89,7 +96,8 @@ def process_image(image: str):
         cv.rectangle(original,
                      (df.loc[i, 'x_lo'], df.loc[i, 'y_lo']),
                      (df.loc[i, 'x_hi'], df.loc[i, 'y_hi']),
-                     (0, 255, 0), original.shape[0] // 1000)
+                     (0, 255, 0),
+                     original.shape[0] // 1000)
 
         cv.putText(original,
                    df.loc[i, 'emotion'],
@@ -99,7 +107,7 @@ def process_image(image: str):
                    (0, 255, 0),
                    original.shape[0] // 400)
 
-    plt.imsave(image + '_labeled.jpg', convertToRGB(original))
+    plt.imsave(TARGET_DIR + image.split("/")[-1].split('.')[0] + '_labeled.jpg', convert_to_rgb(original))
 
 
-process_image('../data/IMG_3099.JPG')
+process_image(IMAGE_FILE)
