@@ -5,3 +5,11 @@
 *.log
 *.out
 *.gz
+
+emotions/*
+emotions/
+
+__pycache__/
+__pycache__/*
+
+tmp/

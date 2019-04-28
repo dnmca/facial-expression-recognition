@@ -1,0 +1,274 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% University Assignment Title Page 
+% LaTeX Template
+% Version 1.0 (27/12/12)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:
+% WikiBooks (http://en.wikibooks.org/wiki/LaTeX/Title_Creation)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+% 
+% Instructions for using this template:
+% This title page is capable of being compiled as is. This is not useful for 
+% including it in another document. To do this, you have two options: 
+%
+% 1) Copy/paste everything between \begin{document} and \end{document} 
+% starting at \begin{titlepage} and paste this into another LaTeX file where you 
+% want your title page.
+% OR
+% 2) Remove everything outside the \begin{titlepage} and \end{titlepage} and 
+% move this file to the same directory as the LaTeX file you wish to add it to. 
+% Then add \input{./title_page_1.tex} to your LaTeX file where you want your
+% title page.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\title{Title page with logo}
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[12pt]{article}
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage{hyperref}
+\usepackage{algorithm2e}
+
+
+
+\textheight=230truemm 
+\textwidth=160truemm 
+\hoffset=-10truemm \voffset=-20truemm
+
+\begin{document}
+
+\begin{titlepage}
+
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % Defines a new command for the horizontal lines, change thickness here
+
+\center % Center everything on the page
+ 
+%----------------------------------------------------------------------------------------
+%	HEADING SECTIONS
+%----------------------------------------------------------------------------------------
+
+\textsc{\LARGE Ukrainian Catholic University}\\[1cm] % Name of your university/college
+\textsc{\Large  Faculty of Applied Sciences}\\[0.5cm] % Major heading such as course name
+\textsc{\large Data Science Master Programme}\\[0.5cm] % Minor heading such as course title
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+\vspace*{1cm}
+
+\HRule \\[0.4cm]
+{ \huge \bfseries Facial Expression Recognition in Natural Images}\\[10pt]
+{\Large \bfseries Machine Learning final project progress report}\\[0.4cm] % Title of your document
+\HRule \\[1cm]
+ 
+%----------------------------------------------------------------------------------------
+%	AUTHOR SECTION
+%----------------------------------------------------------------------------------------
+\vspace*{1cm}
+
+% If you don't want a supervisor, uncomment the two lines below and remove the section above
+\Large \emph{Authors:}\\
+Anastasiia \textsc{Khaburska}\\Andrii \textsc{Yurkiv}\\[1cm] % Your name
+
+%----------------------------------------------------------------------------------------
+%	DATE SECTION
+%----------------------------------------------------------------------------------------
+\vspace*{1cm}
+{\large 27 April 2019}\\[2cm] % Date, change the \today to a set date if you want to be precise
+
+%----------------------------------------------------------------------------------------
+%	LOGO SECTION
+%----------------------------------------------------------------------------------------
+
+\includegraphics[height=5cm]{UCU-Apps.png}\\[1cm] % Include a department/university logo - this will require the graphicx package
+ 
+%----------------------------------------------------------------------------------------
+
+\vfill % Fill the rest of the page with whitespace
+
+\end{titlepage}
+
+
+% \begin{abstract}
+	
+% \end{abstract}
+
+\section{Introduction}
+
+Facial expression is one or more motions or positions of the muscles beneath the skin of the face. It is one of the most important forms of nonverbal communication and the primal mean of social information exchange between humans.\\
+
+It is assumed that certain facial expressions and gestures correspond to specific emotions (for instance, happiness is associated with laughter and smilling, sadness with tears, anger with clenched jaw, fear with grimace, surprise with raised eyebrows and wide eyes and disgust with wrinkled nose and squinted eyes) and are recognized by humans regardless of culture, language or time. But in general, this hypothesis has not been scientifically verified and received both critical and supportive reviews.\\
+
+Both sides of this scientific debate agree that the face expresses emotion.The controversy surrounds the uncertainty about what specific emotional information is read from a facial expression \cite{wiki}.
+
+
+\section{Motivation}
+
+It has been proved multiple times that the majority of information human perceives (up to $83\%$) during message absorbation is obtained throught eyesight. For this purpose boody language in general, and facial expression in particular are the things which provide the most important and certain information about the intentions and emotional state of the message source.\\
+
+It's not hard to conclude that accurate perception of facial expressions is a key to effective face-to-face communication.\\
+
+Humans have a great ability to perform this kind of tasks. And since main facial expressions are universal and do not vary with culture or environment, we usually recognize others emotional state pretty well (at least when our interlocutors are not intentionally hiding it).\\
+
+But for machine, it is not an easy task. There are few reasons why machine learning model usually perform much worse comparing to humans in recognizing facial expressions (while outperforming in other classification tasks):
+\begin{itemize}
+	\item 
+	Humans do not perceive facial expressions separately from other parts of body language. For facial expressions, context is very important, because it provides a great deal of additional information.
+	\item
+	Regardless their universality, facial expressions are very diverse and vary substantially due to the race, age, gender, nationality and culture.
+	\item 
+	People are brilliant at determining how they feel. But in some cultures it is normally to hide your true emotions behind neutral or happy facial expression. It is especially distinguishable in western cultures, where redundant emotionality is not considered as an element of effective communication. Machine learning model don't have this prior knowledge and hence use generalized approach to cases where cultural nuances are crucial.
+	\item 
+	Some kinds of facial expressions are very similar (for example, without context, it's hard to distinguish surprise from fear, or sadness from neutrality). And image similarity is a very important property when the model is trying to determine class depicted on it. Model fails to generalize well and makes mistakes by focusing not on the wrong features.
+\end{itemize}
+
+In this project we are going to develop real-time end-to-end machine learning system of facial expression recognition in natural images. Our system would consist of two parts: face detector and expression recognizer. Unfortunately, we haven't found a data set to evaluate our end-to-end system (we need dataset that contains images with faced in different contexts labeled with facial expression classes). So, we aim to achieve state-of-the-art performance on \texttt{fer2013} data set, which is equal to $75.2\%$
+
+\section{Data}
+
+The project idea was inspired by Kaggle competition "Challenges in Representation Learning: Facial Expression Recognition Challenge". It was organized in 2013, but we think that the topic is still relevant today. The \texttt{fer2013} dataset \cite{dataset} for this competition was prepared by Pierre-Luc Carrier and Aaron Courville.\\
+
+The \texttt{fer2013} data set consists of $48\times48$ pixel gray scale images of faces. The faces have been automatically registered so that the face is more or less centered and occupies about the same amount of space in each image. The task is to categorize each face based on the emotion shown in the facial expression in to one of seven categories (0=Angry, 1=Disgust, 2=Fear, 3=Happy, 4=Sad, 5=Surprise, 6=Neutral).\\
+
+The data set is divide into train, validation and test splits. The training set consists of $28,709$ examples. The validation set consists of $3,589$ examples. The final test set consists of another $3,589$ examples.\\
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{ | l | l | l | l | l | }
+		\hline
+		Expression & Train & Validation & Test & \% of samples \\ \hline
+		Angry & 3995 & 467 & 491 & 13.8 \\ %\hline
+		Disgust & 436 & 56 & 55 & \textbf{1.52} \\ %\hline
+		Fear & 4097 & 496 & 528 & 14.27 \\ %\hline
+		Happy & 7215 & 895 & 879 & \textbf{25.05} \\ %\hline
+		Neutral & 4965 & 607 & 626 & 17.27 \\ %\hline
+		Sad & 4830 & 653 & 594 & 16.93 \\ %\hline
+		Surprise & 3171 & 415 & 416 & 11.15 \\ 
+		\hline
+	\end{tabular}
+	\caption{Distribution of classes in the data set.}
+\end{table}
+
+It is obvious that classes in the data set are not well-balanced. First of all, we have highly underrepresented \texttt{Disgust} class, which will for sure need some special treatment such as data augmentation in case if model doesn't work well on it.\\
+
+Regarding other classes, we still have a huge difference between some of them. For example, $25.05\%$ of samples correspond to the \texttt{Happy} class, which is more than the fraction of \texttt{Angry} and \texttt{Surprise} altogether ($24.95\%$).\\ 
+
+This imbalance issue imposes additional activities in our development process:
+
+\begin{itemize}
+	\item 
+	In case if model performs poorly on underrepresented classes, we would need to perform data augmentation in order to make it more robust. Or remove samples from overrepresented classes.
+	\item
+	We would surely need to use other evaluation metrics, such as confusion matrix to determine the weaknesses of the model and possible improvement strategies.
+\end{itemize}
+
+Besides the imbalance, \texttt{fer2013} data set contains trash samples (which do not contain a face) and a number of misclassified examples. These imperfections make the classification harder because the model has to generalize well and be robust ot incorrect data. At this point, we don't see any solution for this problem that can be performed in a reasonable amount of time.
+
+\section{Baseline model}
+
+At this point, for face detection we are using pre-trained Haar Cascade model from \texttt{cv2} python module. Since we don't have a data set on which we can asses both fact detection and facial recognition model performance, we would not concentrate on the implementation of this part.\\
+
+In the next iteration, in order to make our pipeline more homogeneous, we are going to implement and train our own model for face detection.\\
+
+Our baseline facial expression recognition model is a 4-layer CNN with 3 dense layers. The model architecture is visualized in figure 1.\\
+
+On each layer except output one we used ReLU activation function. On the output layer we used Softmax function. Besides it we applied Dropout regularization technique at each layer of our model, because otherwise it didn't train properly and stuck in the local minima. \\
+
+The details of implementation can be viewed in corresponding jupyter notebook: (\texttt{classification.ipynb}).\\
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{../images/baseline-architecture.png}
+	\caption{Baseline CNN model}
+\end{figure}
+
+You can find the example of model results in figure 2 in Appendix
+
+\section{Evaluation}
+
+Our baseline model gave $63.25\%$ accuracy on test dataset. In the original competition leaderboard, it would be in top 10 submissions. We think, that it is absolutely possible to get even higher accuracy by training the model for larger number of epochs. Still, it is only a baseline model, and in the future iteration we are going to improve this result.\\ 
+
+During the data analysis stage of our project we understood that one of the primary weaknesses of this data set is its imbalance. We haven't tackled this issue yet (plan to do it in the next iteration), but we understood that dealing with it is a major part of this particular problem solution.\\
+
+The thing is, that during evaluation stage we've got very unexpected results. \texttt{Disgust} emotion, while being extremely underepresented is our data set is not the one that suffers most from misclassification. It is \texttt{Angry} and \texttt{Fear}, that model most often treats as other facial expression.\\
+
+\texttt{Fear} ia mostly confused with  \texttt{Sad}. Maybe because often when a person expreriences feat, it doesn't influence her facial expression and has impact only on some inner feelings. In general, when we are afraid of something, we can have different facial expression, depending on the situation, surrounding and the cause of fear. Fear is a complex emotion there is no single facial expression that corresponds to it.\\
+
+From the confusion matrix we can conclude 3 out of 6 facial expression are often confused with \texttt{Sad}. It looks like this is the most obvious way for the model to describe the expression if it is not sure what it sees.\\
+
+One important thing should be noted here: our primary assumption that accuracy of classification of images will be smaller for underrepresented classes is not confirmed by the results produced by our model. This proves one more time that the problem of facial expression recognition is not as simple as it seems from the first sight.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.65\textwidth]{../images/confusion.png}
+	\caption{Normalized confusion matrix}
+\end{figure}
+
+\section{Future work}
+
+We plan to do the following steps during the next iterations:
+
+\begin{itemize}
+	\item 
+	Perform data augmentation for underrepresented classes and check whether it improves the results.
+	\item 
+	Apply other CNN architecture to this problem: VGG, Inception, ResNet.
+	\item 
+	Icrease number of features by adding Face Landmarks and HOG.
+	\item 
+	Write script for facial expression recognition in videos.
+	\item 
+	Perform some basic hyperparameter tuning (model is complex, so it's complicated to iterate fast).
+	\item 
+	Try to solve misclassification problem for \texttt{Angry} and \texttt{Fear} classes.
+\end{itemize}
+
+
+\newpage
+\begin{thebibliography}{6}
+	\bibitem{dataset} 
+	I. Goodfellow et al.
+	\textit{Challenges in Representation Learning: A report on three machine learning
+		contests}. 
+	arXiv, 2013
+	\bibitem{wiki}
+	Wikipedia contributors
+	\textit{Facial expression}
+	\href{https://en.wikipedia.org/wiki/Facial_expression}{Facial expression}
+	
+
+
+\end{thebibliography}
+
+\newpage
+\appendix
+\section{Appendix}
+
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}[h]{0.65\textwidth}
+		\includegraphics[width=\textwidth]{../data/original/test2.jpg}
+		\caption{Original image}
+	\end{subfigure}\qquad
+	\begin{subfigure}[h]{0.65\textwidth}
+		\includegraphics[width=\textwidth]{../images/test2_labeled.jpg}
+		\caption{Predicted facial expressions}
+	\end{subfigure}
+	\caption{Baseline model results}
+\end{figure}
+
+
+\end{document}
