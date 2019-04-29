@@ -121,27 +121,27 @@ It has been proved multiple times that the majority of information human perceiv
 
 It's not hard to conclude that accurate perception of facial expressions is a key to effective face-to-face communication.\\
 
-Humans have a great ability to perform this kind of tasks. And since main facial expressions are universal and do not vary with culture or environment, we usually recognise others emotional state pretty well (at least when our interlocutors are not intentionally hiding it).\\
+Humans have a great ability to perform this kind of tasks. And since main facial expressions are universal and do not vary with culture or environment, we usually recognize others emotional state pretty well (at least when our interlocutors are not intentionally hiding it).\\
 
-But for a machine, it is not an easy task. There are few reasons why machine learning model usually perform much worse compared to humans in recognising facial expressions (while outperforming in other classification tasks):
+But for a machine, it is not an easy task. There are few reasons why machine learning model usually perform much worse compared to humans in recognizing facial expressions (while outperforming in other classification tasks):
 \begin{itemize}
     \item 
     Humans do not perceive facial expressions separately from other parts of body language. For facial expressions, context is very important, because it provides a great deal of additional information.
     \item
     Regardless of their universality, facial expressions are very diverse and vary substantially due to the race, age, gender, nationality and culture.
     \item 
-    People are brilliant at determining how they feel. But in some cultures, it is normal to hide your real emotions behind the neutral or happy facial expression. It is especially distinguishable in western cultures, where excessive emotionality is not considered as an element of effective communication. Machine learning model doesn't have this prior knowledge and hence use a generalised approach to cases where cultural nuances are crucial.
+    People are brilliant at determining how they feel. But in some cultures, it is normal to hide your real emotions behind the neutral or happy facial expression. It is especially distinguishable in western cultures, where excessive emotionality is not considered as an element of effective communication. Machine learning model doesn't have this prior knowledge and hence use a generalized approach to cases where cultural nuances are crucial.
     \item 
-    Some kinds of facial expressions are very similar (for example, without context, it's hard to distinguish surprise from fear, or sadness from neutrality). And image similarity is a fundamental property when the model is trying to determine class depicted on it. The model fails to generalise well and makes mistakes by focusing not on the wrong features.
+    Some kinds of facial expressions are very similar (for example, without context, it's hard to distinguish surprise from fear, or sadness from neutrality). And image similarity is a fundamental property when the model is trying to determine class depicted on it. The model fails to generalize well and makes mistakes by focusing not on the wrong features.
 \end{itemize}
 
-In this project, we are going to develop real-time end-to-end machine learning system of facial expression recognition in natural images. It would consist of two parts: a face detector and expression recogniser. Unfortunately, we haven't found a data set to evaluate our end-to-end system (we need a dataset that contains images with faced in different contexts labelled with facial expression classes). So, we aim to achieve state-of-the-art performance on \texttt{fer2013} data set, which is equal to $75.2\%$
+In this project, we are going to develop real-time end-to-end machine learning system of facial expression recognition in natural images. It would consist of two parts: a face detector and expression recognizer. Unfortunately, we haven't found a data set to evaluate our end-to-end system (we need a data set that contains images with faced in different contexts labelled with facial expression classes). So, we aim to achieve state-of-the-art performance on \texttt{fer2013} data set, which is equal to $75.2\%$
 
 \section{Data}
 
-The project idea was inspired by Kaggle competition "Challenges in Representation Learning: Facial Expression Recognition Challenge". It was organized in 2013, but we think that the topic is still relevant today. The \texttt{fer2013} dataset \cite{dataset} for this competition was prepared by Pierre-Luc Carrier and Aaron Courville.\\
+The project idea was inspired by Kaggle competition "Challenges in Representation Learning: Facial Expression Recognition Challenge". It was organized in 2013, but we think that the topic is still relevant today. The \texttt{fer2013} data set \cite{dataset} for this competition was prepared by Pierre-Luc Carrier and Aaron Courville.\\
 
-The \texttt{fer2013} data set consists of $48\times48$ pixel grayscale images of faces. The faces have been automatically registered so that the face is more or less centred and occupies about the same amount of space in each image. The task is to categorise each face based on the emotion shown in the facial expression into one of seven categories (0=Angry, 1=Disgust, 2=Fear, 3=Happy, 4=Sad, 5=Surprise, 6=Neutral).\\
+The \texttt{fer2013} data set consists of $48\times48$ pixel gray-scale images of faces. The faces have been automatically registered so that the face is more or less centered and occupies about the same amount of space in each image. The task is to categorize each face based on the emotion shown in the facial expression into one of seven categories (0=Angry, 1=Disgust, 2=Fear, 3=Happy, 4=Sad, 5=Surprise, 6=Neutral).\\
 
 The data set is divided into train, validation and test splits. The training set consists of $28,709$ examples. The validation set consists of $3,589$ examples. The final test set consists of another $3,589$ examples.\\
 
@@ -170,7 +170,7 @@ This imbalance issue imposes additional activities in our development process:
 
 \begin{itemize}
     \item 
-    In case if the model performs poorly on underrepresented classes, we would need to perform data augmentation in order to make it more robust. Or remove samples from overrepresented classes.
+    In case if the model performs poorly on underrepresented classes, we would need to perform data augmentation in order to make it more robust. Or remove samples from over-represented classes.
     \item
     We would surely need to use other evaluation metrics, such as the confusion matrix to determine the weaknesses of the model and possible improvement strategies.
 \end{itemize}
@@ -180,13 +180,13 @@ Besides the imbalance, \texttt{fer2013} data set contains trash samples (which d
 \section{Baseline model}
 
 
-At this point, for face detection we are using pre-trained Haar Cascade model from \texttt{cv2} python module. Since we don't have a data set on which we can get asses both fact detection and facial recognition model performance, we would not concentrate on the implementation of this part.\\
+At this point, for face detection we are using pretrained Haar Cascade model from \texttt{cv2} python module. Since we don't have a data set on which we can assess both face detection and facial recognition models performance, we would not concentrate on it's implementation in this part.\\
 
 In the next iteration, to make our pipeline more homogeneous, we are going to implement and train our own model for face detection.\\
 
 Our baseline facial expression recognition model is a 4-layer CNN with 3 dense layers. The model architecture is visualized in figure 1.\\
 
-On each layer except output one we used ReLU activation function. On the output layer we used Softmax function. Besides it, we applied the Dropout regularisation technique at each layer of our model because otherwise it didn't train properly and stuck in the local minima. \\
+On each layer except output one we used ReLU activation function. On the output layer we used Softmax function. Besides it, we applied the Dropout regularization technique at each layer of our model because otherwise it didn't train properly and stuck in the local minima. \\
 
 The details of implementation can be viewed in corresponding jupyter notebook: (\texttt{classification.ipynb}).\\
 
