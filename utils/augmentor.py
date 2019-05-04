@@ -58,9 +58,9 @@ def find_subsets(df: pd.DataFrame, class_to_fraction: dict):
 class Augmenter:
 
     @staticmethod
-    def augment_images(source_file: str, target_file: str, class_to_fraction: dict, augmentations: list) -> None:
+    def augment_images(df: pd.DataFrame, target_file: str, class_to_fraction: dict, augmentations: list) -> pd.DataFrame:
 
-        df = pd.read_csv(source_file)
+        # df = pd.read_csv(source_file)
 
         df['category'] = df['category'].str.strip()
 
@@ -98,26 +98,28 @@ class Augmenter:
                 temp.append([df.iloc[index, 0]] + add_blur(
                     np.array(df.iloc[index, 1:2305], dtype='int').reshape((48, 48))).flatten().tolist() + [df.iloc[index, 2305]])
 
-
         print(len(temp))
 
         data = pd.DataFrame(temp, columns=df.columns)
 
-        data.to_csv(target_file)
+        if target_file:
+            data.to_csv(target_file)
+
+        return data
 
 
-if __name__ == "__main__":
-
-    Augmenter.augment_images(source_file='../data/emotions/emotions.csv',
-                             target_file='../data/emotions/augmentations.csv',
-                             class_to_fraction={'Disgust': 1,
-                                                 'Sad': 0.1,
-                                                 'Fear': 0.1,
-                                                 'Neutral': 0.1,
-                                                 'Angry': 0.1
-                                                 },
-                             augmentations=['flip', 'rotate_right', 'rotate_left', 'blur', 'noise'])
-
+# if __name__ == "__main__":
+#
+#     Augmenter.augment_images(source_file='../data/emotions/emotions.csv',
+#                              target_file='../data/emotions/augmentations.csv',
+#                              class_to_fraction={'Disgust': 1,
+#                                                  'Sad': 0.1,
+#                                                  'Fear': 0.1,
+#                                                  'Neutral': 0.1,
+#                                                  'Angry': 0.1
+#                                                  },
+    #                              augmentations=['flip', 'rotate_right', 'rotate_left', 'blur', 'noise'])
+#
 
 
 
