@@ -108,9 +108,9 @@ Anastasiia \textsc{Khaburska}\\Andrii \textsc{Yurkiv}\\[1cm] % Your name
 
 \section{Introduction}
 
-Facial expression is one or more motions or positions of the muscles beneath the skin of the face. It is one of the most important forms of nonverbal communication and the primal mean of social information exchange between humans.\\
+Facial expression is one or more motions or positions of the muscles beneath the skin of the face. These movements convey the emotional state of an individual and become the primal form of nonverbal communication.\\
 
-It is assumed that certain facial expressions and gestures correspond to specific emotions (for instance, happiness is associated with laughter and smiling, sadness with tears, anger with clenched jaw, fear with grimace, surprise with raised eyebrows and wide eyes and disgust with wrinkled nose and squinted eyes) and are recognized by humans regardless of culture, language or time. But in general, this hypothesis has not been scientifically verified and received both critical and supportive reviews.\\
+It is assumed that certain facial expressions and gestures correspond to specific emotions (for instance, happiness is associated with laughter and smiling, sadness with tears, anger with clenched jaw, fear with grimace, surprise with raised eyebrows and wide eyes and disgust with wrinkled nose and squinted eyes) which  are recognized by humans regardless of culture, language or time. But in general, this hypothesis has not been scientifically verified and received both critical and supportive reviews.\\
 
 Both sides of this scientific debate agree that the face expresses emotion. The controversy surrounds the uncertainty about what specific emotional information is read from a facial expression \cite{wiki}.
 
@@ -132,12 +132,12 @@ But for a machine, it is not an easy task. There are few reasons why machine lea
     \item 
     People are brilliant at determining how they feel. But in some cultures, it is normal to hide your real emotions behind the neutral or happy facial expression. It is especially distinguishable in western cultures, where excessive emotionality is not considered as an element of effective communication. Machine learning model doesn't have this prior knowledge and hence use a generalized approach to cases where cultural nuances are crucial.
     \item 
-    Some kinds of facial expressions are very similar (for example, without context, it's hard to distinguish surprise from fear, or sadness from neutrality). And image similarity is a fundamental property when the model is trying to determine class depicted on it. The model fails to generalize well and makes mistakes by focusing not on the wrong features.
+    Some kinds of facial expressions are very similar (for example, without context, it's hard to distinguish surprise from fear, or sadness from neutrality). And image similarity is a fundamental property when the model is trying to determine class depicted on it. The model fails to generalize well and makes mistakes by focusing on the wrong features.
 \end{itemize}
 
-In this project, we are going to develop real-time end-to-end machine learning system of facial expression recognition in natural images. It would consist of two parts: a face detector and expression recognizer. Unfortunately, we haven't found a data set to evaluate our end-to-end system (we need a data set that contains images with faced in different contexts labelled with facial expression classes). So, we aim to achieve state-of-the-art performance on \texttt{fer2013} data set, which is equal to $75.2\%$
+In this project, we investigated deep learning aproaches to the task of facial expression recognition and  developed an end-to-end machine learning system of facial expression recognition in natural images. It consists of two parts: a face detector and expression recognizer. Unfortunately, we haven't found a data set to evaluate our end-to-end system (we need a data set that contains images with faced in different contexts labelled with facial expression classes). So, we evaluated our results in conjunction with state-of-the-art performance on \texttt{fer2013} data set, which is equal to $75.2\%$
 
-\section{Data}
+\section{Project idea. Data}
 
 The project idea was inspired by Kaggle competition "Challenges in Representation Learning: Facial Expression Recognition Challenge". It was organized in 2013, but we think that the topic is still relevant today. The \texttt{fer2013} data set \cite{dataset} for this competition was prepared by Pierre-Luc Carrier and Aaron Courville.\\
 
@@ -162,22 +162,23 @@ The data set is divided into train, validation and test splits. The training set
 	\caption{Distribution of classes in the data set.}
 \end{table}
 
-It is obvious that classes in the data set are not well-balanced. First of all, we have highly underrepresented \texttt{Disgust} class, which will for sure need some special treatment such as data augmentation in case if the model doesn't work well on it.\\
-
-Regarding other classes, we still have a huge difference between some of them. For example, $25.05\%$ of samples correspond to the \texttt{Happy} class, which is more than the fraction of \texttt{Angry} and \texttt{Surprise} altogether ($24.95\%$).\\ 
+The classes in the data set are not well-balanced. First of all, we have highly underrepresented \texttt{Disgust} class. Also, $25.05\%$ of samples correspond to the \texttt{Happy} class, which is more than the fraction of \texttt{Angry} and \texttt{Surprise} altogether ($24.95\%$).\\ 
 
 This imbalance issue imposes additional activities in our development process:
 
 \begin{itemize}
     \item 
-    In case if the model performs poorly on underrepresented classes, we would need to perform data augmentation in order to make it more robust. Or remove samples from over-represented classes.
+    We performed data augmentation in order to make it more robust.
     \item
-    We would surely need to use other evaluation metrics, such as the confusion matrix to determine the weaknesses of the model and possible improvement strategies.
+    We used minibatch normalization, to reduse the covarianse shift and to increase training rates.
+    \item
+    As an evaluation metric, we used the confusion matrix to determine the weaknesses of the model and possible improvement strategies.
 \end{itemize}
 
-Besides the imbalance, \texttt{fer2013} data set contains trash samples (which do not contain a face) and several misclassified examples. These imperfections make the classification harder because the model has to generalise well and be robust to incorrect data. At this point, we don't see any solution to this problem that can be performed in a reasonable amount of time.
+Besides the imbalance, \texttt{fer2013} data set contains trash samples (which do not contain a face) and several misclassified examples. These imperfections make the classification harder because the model has to generalise well and be robust to incorrect data. To adress this problem and clean the dataset we used our first part of solution -- face recognition.
 
-\section{Baseline model}
+\section{Approach to the solution}
+\subsection{Baseline model}
 
 
 At this point, for face detection we are using pretrained Haar Cascade model from \texttt{cv2} python module. Since we don't have a data set on which we can assess both face detection and facial recognition models performance, we would not concentrate on it's implementation in this part.\\
@@ -197,6 +198,10 @@ The details of implementation can be viewed in corresponding jupyter notebook: (
 \end{figure}
 
 You can find the example of model results in figure 2 in the Appendix.
+\subsection{VGG}
+\subsection{Dropout}
+\subsection{Batch normalization}
+\subsection{Ensamble}
 
 \section{Evaluation}
 
@@ -218,7 +223,9 @@ One important thing should be noted here: the results produced by our the model 
 	\caption{Normalized confusion matrix}
 \end{figure}
 
-\section{Future work}
+\section{Comparisons}
+
+\section{Conclusions}
 
 We plan to do the following steps during the next iterations:
 
