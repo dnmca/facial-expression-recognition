@@ -133,9 +133,10 @@ Humans have a great ability to perform this kind of tasks. And since main facial
 	\label{fig:tsne}
 \end{figure}
 
-But for a machine, it is not an easy task. We tried to visualize images in two-dimensional space using $t$-SNE algorithm [\ref{fig:tsne}]. As you can observe, facial expressions are not the things that the algorithms uses to differentiate between images. It is skin color, age gender what algorithm notices.\\
 
-If we asked any human to take a a look on faces (for example, those [\ref{fig:faces}]) and say whether there is a substantial visual difference between them, we would certainly hear "yes". But, in fact, they are not that different. It is our ability to recognize these differences that makes humans consider them substantial. In general, there are few reasons why machine learning model usually perform much worse compared to humans in recognizing facial expressions (while outperforming in other classification tasks):
+But for a machine, it is not an easy task. We tried to visualize images in two-dimensional space using $t$-SNE algorithm [\ref{fig:tsne}]. As you can observe, facial expressions are not the things that the algorithms use to differentiate between images. It is skin colour, age gender what algorithm notices.\\
+
+If we asked any human to take a look on faces (for example, those [\ref{fig:faces}]) and say whether there is a substantial visual difference between them, we would certainly hear "yes". But, in fact, they are not that different. It is our ability to recognize these differences that makes humans consider them substantial. In general, there are few reasons why machine learning model usually perform much worse compared to humans in recognizing facial expressions (while outperforming in other classification tasks):
 
 \begin{itemize}
     \item 
@@ -150,18 +151,18 @@ If we asked any human to take a a look on faces (for example, those [\ref{fig:fa
 
 
 
-In this project, we investigated deep learning approaches to the task of facial expression recognition and  developed an end-to-end machine learning system of facial expression recognition in natural images. It consists of two parts: a face detector and expression recognizer. Unfortunately, we haven't found a data set to evaluate our end-to-end system (we need a data set that contains images with faced in different contexts labelled with facial expression classes). So, we evaluated our results in conjunction with state-of-the-art performance on \texttt{fer2013} data set, which is equal to $75.2\%$
+In this project, we investigated deep learning approaches to the task of facial expression recognition and developed an end-to-end machine learning system of facial expression recognition in natural images. It consists of two parts: a face detector and expression recognizer. Unfortunately, we haven't found a data set to evaluate our end-to-end system (we need a data set that contains images with faced in different contexts labelled with facial expression classes). So, we evaluated our results in conjunction with state-of-the-art performance on \texttt{fer2013} data set, which is equal to $75.2\%$
 
 \section{Related Work}
 
 Byoung Chul Ko in a paper “A Brief Review of Facial Emotion Recognition Based on Visual Information”\cite{FERreview} gives an overview of researches in the field of FER conducted over the past decades. To tackle the problem of FER researchers tried such techniques : 
 \begin{enumerate}
-\item Conventional  FER  approaches along the  representative categories of FER systems and their main algorithms. 
+\item Conventional  FER  approaches along with the representative categories of FER systems and their main algorithms. 
 \item Deep-learning-based FER approaches
 \item Hybrid deep-learning approach combining a convolutional neural network (CNN)for the spatial features of an individual frame and long short-term memory (LSTM) for temporal features of consecutive frames.
 \end{enumerate}
 
-Papers in this area are usually focused on recognizing human emotion in the context of video data (consecutive frames)\cite{video1}. In terms of this homework project we investigated deep-learning-based approaches, that solve the problem for from still images (individual frames). An overview to various deep learning methods applicable to this particular problem was also made by Alexandru Savoiu and James Wong in \cite{deepNN}. Our contribution was to learn and implement different approaches, create own models, train them on the conjoint data-set, evaluate and then compare.
+Papers in this area are usually focused on recognizing human emotion in the context of video data (consecutive frames)\cite{video1}. In terms of this homework project, we investigated deep-learning-based approaches, that solve the problem for from still images (individual frames). An overview of various deep learning methods applicable to this particular problem was also made by Alexandru Savoiu and James Wong in \cite{deepNN}. Our contribution was to learn and implement different approaches, create own models, train them on the conjoint data-set, evaluate and then compare.
 
 \section{Project idea. Data}
 
@@ -174,7 +175,7 @@ The project idea was inspired by Kaggle competition "Challenges in Representatio
 	\label{fig:faces}
 \end{figure}
 
-The \texttt{fer2013} data set consists of $48\times48$ pixel gray-scale images of faces. The faces have been automatically registered so that the face is more or less centered and occupies about the same amount of space in each image. The task is to categorize each face based on the emotion shown in the facial expression into one of seven categories (0=Angry, 1=Disgust, 2=Fear, 3=Happy, 4=Sad, 5=Surprise, 6=Neutral).\\
+The \texttt{fer2013} data set consists of $48\times48$ pixel gray-scale images of faces. The faces have been automatically registered so that the face is more or less centred and occupies about the same amount of space in each image. The task is to categorize each face based on the emotion shown in the facial expression into one of seven categories (0=Angry, 1=Disgust, 2=Fear, 3=Happy, 4=Sad, 5=Surprise, 6=Neutral).\\
 
 The data set is divided into train, validation and test splits. The training set consists of $28,709$ examples. The validation set consists of $3,589$ examples. The final test set consists of another $3,589$ examples.\\
 
@@ -203,7 +204,7 @@ This imbalance issue imposes additional activities in our development process:
     \item 
     We performed data augmentation in order to make it more robust.
     \item
-    We used minibatch normalization, to reduse the covarianse shift and to increase training rates.
+    We used minibatch normalization, to reduce the covariance shift and to increase training rates.
     \item
     As an evaluation metric, we used the confusion matrix to determine the weaknesses of the model and possible improvement strategies.
 \end{itemize}
@@ -218,13 +219,13 @@ Besides the imbalance, \texttt{fer2013} data set contains trash samples (which d
 \section{Approach to the solution}
 \subsection{Face detection}
 
- Since we haven't found a data set on which we can assess both face detection and facial recognition models performance we decided to use pretrained Haar Cascade model for front-face detection from \texttt{cv2} python module. It works well in general but sometimes fails to detect faces in unusual conditions or under unusual aspect. But it is absolutely fine if we take into account the scope and setting of our project.\\
+ Since we haven't found a data set on which we can assess both face detection and facial recognition models performance we decided to use a pretrained Haar Cascade model for front-face detection from \texttt{cv2} python module. It works well in general but sometimes fails to detect faces in unusual conditions or under unusual aspect. But it is absolutely fine if we take into account the scope and setting of our project.\\
 
 \subsection{Baseline model}
 
 Our baseline facial expression recognition model is a 4-layer CNN with 3 dense layers. The model architecture is visualized in [\ref{fig:baseline}].\\
 
-On each layer except output one we used ReLU activation function. On the output layer we used Softmax function. We applied batch normalization after each convolutional layer in order to make our model converge faster and omit getting stuck in local minima. Besides it, we applied the Dropout regularization technique at each layer to prevent overfitting and make our model generalize better. \\
+On each layer except output one, we used ReLU activation function. On the output layer, we used Softmax function. We applied batch normalization after each convolutional layer in order to make our model converge faster and omit getting stuck in local minima. Besides it, we applied the Dropout regularization technique at each layer to prevent overfitting and make our model generalize better. \\
 
 \begin{figure}
 	\centering
@@ -235,23 +236,23 @@ On each layer except output one we used ReLU activation function. On the output 
 
 \subsection{Baseline model with data augmentation}
 
-As we mentioned in the previous section, the data set we were training our model on was very unbalanced. We decided to tackle this problem using data augmentation for train set. The general approach was as following: we randomly augmented $100\%$ of \texttt{Disgust} class images, $50\%$ of \texttt{Fear} and \texttt{Angry} classes and $10\%$ of \texttt{Surprise}, \texttt{Happy}, \texttt{Neutral} and \texttt{Sad} ones. We used 5 different augmentation techniques for each image: horizontal flipping, left/right rotation by $15$ degrees, noise and blur introduction. As a result, we increased our train set size by $32490$ images. Our baseline model was simple enough to handle this amount of data without substantial increase in training time.\\
+As we mentioned in the previous section, the data set we were training our model on was very unbalanced. We decided to tackle this problem using data augmentation for the train set. The general approach was as following: we randomly augmented $100\%$ of \texttt{Disgust} class images, $50\%$ of \texttt{Fear} and \texttt{Angry} classes and $10\%$ of \texttt{Surprise}, \texttt{Happy}, \texttt{Neutral} and \texttt{Sad} ones. We used 5 different augmentation techniques for each image: horizontal flipping, left/right rotation by $15$ degrees, noise and blur introduction. As a result, we increased our train set size by $32490$ images. Our baseline model was simple enough to handle this amount of data without a substantial increase in training time.\\
 
 We didn't apply data augmentation for modification of VGG-19 and Original VGG-19, because it would take much longer time to train those models with $2\times$ more data.\\ 
 
-Data augmentation increased the performance of the baseline model by nearly $3\%$, which means that it was a reasonable procedure to perform. One important thing to note is it was crucial for the model that dropout rate at each layer was equal to $0.5$. Otherwise model over-fitted and performed poorly on test data.\\
+Data augmentation increased the performance of the baseline model by nearly $3\%$, which means that it was a reasonable procedure to perform. One important thing to note is it was crucial for the model that dropout rate at each layer was equal to $0.5$. Otherwise, model over-fitted and performed poorly on test data.\\
 
 \subsection{Baseline model with HOG}
 
-During data analysis stage of our project we had an idea that introduction of additional features to the model could increase its performance. There are a lot of ways to extract additional information from the image. In our setting the most applicable were Face Landmarks and HOG (Histogram of Oriented Gradients). Each of them employs different approach to feature extraction and, hence, results in different amount of features. For example, using Face Landmarks, we usually get less than 100 features, and using HOG we can get up to $n\times n$ features (where $n$ is image height).\\
+During the data analysis stage of our project, we had an idea that the introduction of additional features to the model could increase its performance. There are a lot of ways to extract additional information from the image. In our setting the most applicable were Face Landmarks and HOG (Histogram of Oriented Gradients). Each of them employs a different approach to feature extraction and, hence, results in different amount of features. For example, using Face Landmarks, we usually get less than 100 features and using HOG we can get up to $n\times n$ features (where $n$ is image height).\\
 
-Observing results obtained in \cite{githubHOG}, we came to conclusion that HOG features/Face Landmarks do not considerably improve the model performance in our problem setting. But we still decided to check this assumption.\\
+Observing results obtained in \cite{githubHOG}, we concluded that HOG features/Face Landmarks do not considerably improve the model performance in our problem setting. But we still decided to check this assumption.\\
 
-When choosing among Face Landmarks and HOG we chose second one, because it is much easier to implement. We added a branch with HOG input to baseline model, and trained it on the regular data without augmentation. The model obtained performed really poorly (accuracy decreased by $4\%$) and consequently we decided not to use additional features in the future modeling process.
+When choosing among Face Landmarks and HOG we chose the second one, because it is much easier to implement. We added a branch with HOG input to the baseline model, and trained it on the regular data without augmentation. The model obtained performed really poorly (accuracy decreased by $4\%$) and consequently we decided not to use additional features in the future modelling process.
 
 \subsection{AlexNet model}
 
-One more model we tried was an adaptation of classic AlexNet model. This model consists of 6 convolutional layers and 4 dense layers. ReLU activation function was used on each layer expcept the output one, where Softmax is employed. In order to simplify this model we decreased the number of neurons in the dense layers (first - by half, second - by $3/4$ and third - by half). Besides it, we had to decrease kernels and pooling size in the first layers of the network, since the original model was developed for $224\times 224$ images, and our images are much smaller.\\
+One more model we tried was an adaptation of the classic AlexNet model. This model consists of 6 convolutional layers and 4 dense layers. ReLU activation function was used on each layer except the output one, where Softmax is employed. In order to simplify this model we decreased the number of neurons in the dense layers (first - by half, second - by $3/4$ and third - by half). Besides it, we had to decrease kernels and pooling size in the first layers of the network, since the original model was developed for $224\times 224$ images, and our images are much smaller.\\
 
 The AlexNet model architecture is depicted in [\ref{fig:alexnet}].\\
 
@@ -266,11 +267,11 @@ AlexNet model proved to perform worse than the baseline in both regular and augm
 
 \subsection{VGG-19 model}
 
-The original VGG network described in ~\cite{VGG} uses an architecture with very small (5x5; 3x3) convolution filters, consecutively with depth 64, 128, 256, 512, pushing size up to 19, depending on the problem. This architecture showed sufficient accuracy for large scale RGB images classification tasks.\\
+The original VGG network described in ~\cite{VGG} uses an architecture with very small (5x5; 3x3) convolution filters, consecutively with depth 64, 128, 256, 512, pushing size up to 19, depending on the problem. This architecture showed sufficient accuracy for classification tasks of large scale RGB images .\\
 
-We adjusted VGG network for images of size $48\times48\times1$. During training, the best result of 66.5\% accuracy was obtained with 7-layer VGG network. The architecture of this adjusted VGG network is shown in [\ref{fig:VGG}]. The only preprocessing we did was image scaling to range [0:1] by division of each pixel pixel by 255. Then image is passed through the convolutional layer, with receptive field of size $5\times5$, and then through  stack of convolutional layers, where we use filters with a very small receptive field 3x3 (which is the smallest size to capture the notion of left/right, up/down, center ~\cite{VGG}). The convolution stride is fixed to 1 pixel and the padding is adjusted in a way that after each convolution the size of the image remains the same. Also, for downsampling only the important features of the images, as in ~\cite{MaxOut}, we decided to add MaxPooling after the first convolution and the Average Pooling after the each second convolution. Each pooling reduces the height and length of the layer by two. To prevent overfitting even more, as suggested in ~\cite{DropOut} and ~\cite{DropOutOverfit}, we decided to use dropout in all layers with a fraction 0.5.\\
+We adjusted the VGG network for images of size $48\times48\times1$. During training, the best result of 66.5\% accuracy was obtained with a 7-layer VGG network. The architecture of this adjusted VGG network is shown in [\ref{fig:VGG}]. The only preprocessing we did was image scaling to the range [0:1] by the division of each pixel by 255. Then, the image is passed through the convolutional layer, with receptive field of size $5\times5$, and then through  stack of convolutional layers, where we use filters with a very small receptive field 3x3 (which is the smallest size to capture the notion of left/right, up/down, centre ~\cite{VGG}). The convolution stride is fixed to 1 pixel and the padding is adjusted in a way that after each convolution the size of the image remains the same. Also, for downsampling only the important features of the images, as in ~\cite{MaxOut}, we decided to add MaxPooling after the first convolution and the Average Pooling after each second convolution. Each pooling reduces the height and length of the layer by two. To prevent overfitting even more, as suggested in ~\cite{DropOut} and ~\cite{DropOutOverfit}, we decided to use dropout in all layers with a fraction 0.5.\\
 
-On each layer except output one we used ReLU activation function.  On the output layer we used Softmax function. To adress the problem of internal covariance shift, we performed the normalization for each training mini-batch. Batch Normalization also acts as a regularizer and achieves the same accuracy with fewer training steps ~\cite{batchnormalization}.
+On each layer except the output one, we used ReLU activation function.  On the output layer, we used Softmax function. To address the problem of internal covariance shift, we performed the normalization for each training mini-batch. Batch Normalization also acts as a regularizer and achieves the same accuracy with fewer training steps ~\cite{batchnormalization}.
 
 \begin{figure}
 	\centering
@@ -281,21 +282,21 @@ On each layer except output one we used ReLU activation function.  On the output
 
 \subsection{Ensamble approach}
 
-The models we trained (even the best ones) showed pretty mediocre results on the test set, comparing to the state-of-the-art models proposed, for example in \cite{ferSOTA}. In this specific paper authors achieved astonishing accuracy of $75.2\%$ using ensemble of 8 complex models (VGG, ResNet and Inception). We decided that this approach would be reasonable in our setting as well.\\
+The models we trained (even the best ones) showed pretty mediocre results on the test set, comparing to the state-of-the-art models proposed, for example in \cite{ferSOTA}. In this specific paper, authors achieved astonishing accuracy of $75.2\%$ using an ensemble of 8 complex models (VGG, ResNet and Inception). We decided that this approach would be reasonable in our setting as well.\\
 
-We tried 2 different ensembles: combinations of 3 strongest models (in our case - Baseline with Augmentation, VGG and Original VGG) and combination of 5 strongest models (those used in previous ensemble plus Baseline and Alexnet with Augmentation). As a result we got a substantial increase in accuracy for both validation and test sets. As expected, ensemble of 5 models performed better than the ensemble of 3. \\
+We tried two different ensembles: combinations of 3 strongest models (in our case - Baseline with Augmentation, VGG and Original VGG) and combination of 5 strongest models (those used in previous ensemble plus Baseline and AlexNet with Augmentation). As a result, we got a substantial increase in accuracy for both validation and test sets. As expected, an ensemble of 5 models performed better than the ensemble of 3. \\
 
-For the ensemble of 5 models we have used "smart" voting system by weighting models' votes using their validation accuracy. It was very beneficial in those cases when two models predicted one class and two - the other one. This approach allowed us to fight ambiguity and let better models to make the decision.\\
+For the ensemble of 5 models, we have used "smart" voting system by weighting models' votes using their validation accuracy. It was very beneficial in those cases when two models predicted one class and two - the other one. This approach allowed us to fight ambiguity and let better models to make the decision.\\
 
 \subsection{Training}
 
-We trained our models for different number of epochs depending on such parameters as crossentropy loss and categorical accuracy. We tried different approaches and tuned hyper parameters many times in order to make our models more robust (we changed learning rates, dropout rates, added/removed layers, decreased their size, changed optimizers and enhanced existing models with augmented data). Besides it, we always reused pretrained weights in the future iterations to accelerate computations and iterate faster.\\
+We trained our models for a different number of epochs depending on such parameters as cross-entropy loss and categorical accuracy. We tried different approaches and tuned hyper-parameters many times to make our models more robust (we changed learning rates, dropout rates, added/removed layers, decreased their size, changed optimizers and enhanced existing models with augmented data). Besides it, we always reused pretrained weights in the future iterations to accelerate computations and iterate faster.\\
 
-It should be noted that validation loss didn't fall below 0.97 in any of our experiments. During the training process it usually oscillated around 1 and then, after large number of epochs began to slowly but gradually increase till the end of the training. We tried a lot of things to change this behaviour, but didn't succeed.
+It should be noted that validation loss didn't fall below 0.97 in any of our experiments. During the training process, it usually oscillated around 1 and then, after a large number of epochs began to slowly but gradually increase till the end of the training. We tried a lot of things to change this behaviour but didn't succeed.
 
 \section{Evaluation}
 
-The accuracies of the model used can be seen in \ref{table:acc}. Two types of models performed best in the FER task: simple models trained on aggressively augmented training data (BaseAug) and complex models trained on regular training data. Those models, that were somewhat in the middle (AlexNet) didn't really performed well. We explain it by the specificity of the task. Simple model (shallow, if we are talking about CNN) doesn't have an ability to learn comoplex hypothesis. That's why it benefits a lot from augmented data. Complex, deep CNN models, on the other hand, have this ability, so they can perform well even without data augmentation.\\
+The accuracies of the model used can be seen in \ref{table:acc}. Two types of models performed best in the FER task: simple models trained on aggressively augmented training data (BaseAug) and complex models trained on regular training data. Those models that were somewhat in the middle (AlexNet) didn't really perform well. We explain it by the specificity of the task. A simple model (shallow, if we are talking about CNN) can't learn complex hypothesis. That's why it benefits a lot from augmented data. Complex, deep CNN models, on the other hand, have this ability so that they can perform well even without data augmentation.\\
 
 As we can observe from the confusion matrix [\ref{fig:conf}], constructed using predictions of ensemble of 5 models, it does a great job recognizing \texttt{Happy} and \texttt{Surprise} expressions, while failing to recognize accurately such expressions as \texttt{Fear}, \texttt{Sad} and \texttt{Angry}. In general, it's not an unexpected result. Those are complex and ambiguous facial expressions that are often misinterpreted if seen without corresponding context. 
 
@@ -322,32 +323,32 @@ As we can observe from the confusion matrix [\ref{fig:conf}], constructed using 
 
 \section{Conclusions}
 
-As a result of this project, we developed an efficient end-to-end system for facial expression recognition in natural images. We didn't succeed to achieve state-of-the-art accuracy on the data set, but still obtained performance that would provide us second absolute place in the original Kaggle leaderboard ($70.3\%$).\\
+As a result of this project, we developed an efficient end-to-end system for facial expression recognition in natural images. We didn't succeed to achieve state-of-the-art accuracy on the data set, but still obtained performance that would provide us a second absolute place in the original Kaggle leaderboard ($70.3\%$).\\
 
-Our final solution for classification problem is an ensamble of 5 models: baseline CNN model, baseline model trained on augmented data, AlexNet model trained on augmented data,  modified VGG network and Original VGG network. This is not the fastest or most efficient solution, but it generalizes well. \\
+Our final solution for classification problem is an ensemble of 5 models: baseline CNN model, baseline model trained on augmented data, AlexNet model trained on augmented data,  modified VGG network and Original VGG network. This is not the fastest or most efficient solution, but it generalizes well. \\
 
 During the project implementation we made some important observations:
 
 \begin{itemize}
 	\item 
-	Facial expressions are really hard to recognize. They are subtle, ambiguous and culture-specific. It's impossible to create a perfect classifier without additional contextual information.
+	Facial expressions are really hard to recognize. They are subtle, ambiguous and culture-specific. Creating a perfect classifier without additional contextual information is impossible.
 	\item 
-	Complex CNN models (like VGG) really worth it. They may be hard to train or store, but at the same time they are able to learn highly complex non-linear hypothesis which gives them considerable advantage over simpler models. 
+	Complex CNN models (like VGG) really worth it. They may be hard to train or store, but at the same time, they can learn highly complex non-linear hypothesis which gives them a considerable advantage over simpler models. 
 	\item 
-	HOG doesn't worth it (at least in this problem). Facial expressions are too complex and subtle to be noticed by HOG, and as a result it just introduces unnecessary noise which doesn't make the model perform better.
+	HOG doesn't worth it (at least in this problem). Facial expressions are too complex and subtle to be noticed by HOG, and as a result, it just introduces unnecessary noise which doesn't make the model perform better.
 	\item 
 	Data augmentation is a very reasonable way to improve your model and make it generalize better by smoothing data imbalance. Other important question is what and how to augment, especially in cases when two classes are very similar (\texttt{Sad} and \texttt{Neutral} in our case).
 	\item 
-	If you hit the ceiling with separate models, try ensemble. It will for sure make your model to perform better.
+	If you hit the ceiling with separate models, try ensemble. It will for sure make your model perform better.
 	\item 
-	Computational resources are very important. They allow to iterate faster and to implement you idea in hours instead of days. 
+	Computational resources are very important. They allow to iterate faster and to implement your idea in hours instead of days. 
 	\item
-	There is no need to implement existing things from scratch if you want to move fast. In our case, for example, face detection problem was solved long time ago (it is even a part of existing python package), so we decided not to concentrate on it.
+	There is no need to implement existing things from scratch if you want to move fast. In our case, for example, face detection problem was solved a long time ago (it is even a part of an existing python package), so we decided not to concentrate on it.
 \end{itemize}
 
 
 
-The code, experiments and scripts can be found in project GitHub repository:\\ 
+The code, experiments and scripts can be found in the  project GitHub repository:\\ 
 
 \url{https://github.com/andreyurkiv/facial-expression-recognition}.
 
